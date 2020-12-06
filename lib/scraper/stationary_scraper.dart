@@ -21,32 +21,12 @@ class StationaryScraper implements WimiiScheduleScraper {
       final withoutPolishChars = removeDiacritics(response.body);
       return parse(withoutPolishChars, encoding: 'iso-8859-2');
     } else {
-      throw Exception('Not found');
+      throw Exception('Request failed');
     }
-  }
-
-  @override
-  Future<Schedule> scrapSchedule(Group group) async {
-    final document = await getScheduleDocument(group.link);
-
-    final days = <Day>[];
-
-    final dayCount = getDayCount(document);
-    for (var i = 0; i < dayCount; i++) {
-      days.add(getDay(document, i));
-    }
-    return Schedule(days);
   }
 
   int getDayCount(Document document) {
     return (document.querySelector('tr').children.length - 1) ~/ 2;
-  }
-
-  Day getDay(Document document, int dayIndex) {
-    final dayName = getDayName(document, dayIndex);
-
-    final activities = getActivities(document, dayIndex);
-    return Day(dayName, activities);
   }
 
   String getDayName(Document document, int dayIndex) {
@@ -85,14 +65,12 @@ class StationaryScraper implements WimiiScheduleScraper {
     return activities;
   }
 
-  Activity getActivity(Element element, Element activityElement, int index) {
-    final beginning = getActivityBeginning(element);
-    final subjectName = getActivityName(activityElement);
-    final teacher = getActivityTeacher(activityElement);
-    final type = getActivityType(activityElement);
-    final room = getActivityLocation(activityElement);
+  Day getDay(Document document, int dayIndex) {
+    final frameStart = 1 + dayIndex * 2;
 
-    return Activity(beginning, subjectName, teacher, type, room);
+    final dayName = getDayName(document, frameStart);
+    final activities = getActivities(document, frameStart + 1);
+    return Day(dayName, activities);
   }
 
   String getActivityBeginning(Element element) {
@@ -154,6 +132,28 @@ class StationaryScraper implements WimiiScheduleScraper {
     } on RangeError {
       return activityElement.nodes.last.text;
     }
+  }
+
+  Activity getActivity(Element element, Element activityElement, int index) {
+    final beginning = getActivityBeginning(element);
+    final subjectName = getActivityName(activityElement);
+    final teacher = getActivityTeacher(activityElement);
+    final type = getActivityType(activityElement);
+    final room = getActivityLocation(activityElement);
+
+    return Activity(beginning, subjectName, teacher, type, room);
+  }
+
+  @override
+  Future<Schedule> scrapSchedule(Group group) async {
+    final document = await getScheduleDocument(group.link);
+    final days = <Day>[];
+
+    final dayCount = getDayCount(document);
+    for (var i = 0; i < dayCount; i++) {
+      days.add(getDay(document, i));
+    }
+    return Schedule(days);
   }
 
   void dispose() {
