@@ -1,4 +1,3 @@
-import 'package:diacritic/diacritic.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart';
@@ -18,8 +17,7 @@ class StationaryScraper implements WimiiScheduleScraper {
     final response = await _client.get(link);
 
     if (response.statusCode == 200) {
-      final withoutPolishChars = removeDiacritics(response.body);
-      return parse(withoutPolishChars, encoding: 'iso-8859-2');
+      return parse(response.body);
     } else {
       throw Exception('Request failed');
     }
