@@ -39,7 +39,7 @@ class StationaryScraper implements WimiiScheduleScraper {
   }
 
   int getDayCount(Document document) {
-    return document.querySelector('tr').children.length - 1;
+    return (document.querySelector('tr').children.length - 1) ~/ 2;
   }
 
   Day getDay(Document document, int dayIndex) {
@@ -50,7 +50,10 @@ class StationaryScraper implements WimiiScheduleScraper {
   }
 
   String getDayName(Document document, int dayIndex) {
-    return document.querySelector('tr').children[dayIndex + 1].innerHtml;
+    final dayFrame = 1 + 2 * dayIndex + 1;
+    final dayTd = document.querySelector('tr').children[dayFrame];
+
+    return dayTd.innerHtml;
   }
 
   List<Activity> getActivities(Document document, int dayIndex) {

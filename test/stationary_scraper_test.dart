@@ -33,19 +33,20 @@ void main() {
   test('daycount returns valid count', () async {
     final document = await scraper.getScheduleDocument('blah');
     final count = scraper.getDayCount(document);
-    expect(count, 5);
+    expect(count, 16 * 5 - 2);
+    // Wtorek and środa is missing once
   });
 
-  test('scraper return proper day name -> poniedizalek', () async {
+  test('scraper return proper day name -> Pon', () async {
     final document = await scraper.getScheduleDocument('blah');
     final value = scraper.getDayName(document, 0);
-    expect(value.contains('Ponie'), true);
+    expect(value, contains('Pon'));
   });
 
   test('scraper return proper day name -> środa', () async {
     final document = await scraper.getScheduleDocument('blah');
     final value = scraper.getDayName(document, 2);
-    expect(value.contains('roda'), true);
+    expect(value, contains('Sro'));
   });
 
   test('populated day 0 returns 12 activities', () async {
@@ -72,84 +73,70 @@ void main() {
     expect(day.activities.length, 12);
   });
 
-  test('day 3 returns 12 activities', () async {
-    final document = await scraper.getScheduleDocument('blah');
-    final day = scraper.getDay(document, 3);
-    expect(day.activities.length, 12);
-  });
-
-  test('day 4 returns 12 activities', () async {
-    final document = await scraper.getScheduleDocument('blah');
-    final day = scraper.getDay(document, 4);
-    expect(day.activities.length, 12);
-  });
-
   test('scraper returns proper activity name', () async {
     final document = await scraper.getScheduleDocument('blah');
-    // obliczenia symboliczne
-    final element = document.querySelectorAll('td')[19];
+    // Prog. urządzeń mobilnych wyk.
+    // Grosser Andrzej Dr inż. /KI/
+    // E-learning
+
+    final element = document.querySelectorAll('tr')[7].children[12];
     final activity = scraper.getActivityName(element);
 
-    final statement = activity.toLowerCase().contains('instalacji');
-
-    expect(statement, true);
+    expect(activity, contains('Prog. urzadzen'));
   });
 
   test('scraper returns proper activity teacher', () async {
     final document = await scraper.getScheduleDocument('blah');
     //Eksploatacja instalacji energetycznych
-    final element = document.querySelectorAll('td')[19];
+    final element = document.querySelectorAll('tr')[7].children[12];
     final teacher = scraper.getActivityTeacher(element);
 
-    expect(teacher.toLowerCase().contains('Artur'.toLowerCase()), true);
+    expect(teacher, contains('Grosser Andrzej'));
   });
 
-  test('scraper returns proper activity type -> lab', () async {
+  test('scraper returns proper activity type -> lect', () async {
     final document = await scraper.getScheduleDocument('blah');
-    final element = document.querySelectorAll('td')[19];
+    // Prog. urządzeń mobilnych wyk.
+    // Grosser Andrzej Dr inż. /KI/
+    // E-learning
+    // body > table:nth-child(12) > tbody:nth-child(1) > tr:nth-child(8) > td:nth-child(13)
+    final element = document.querySelectorAll('tr')[7].children[12];
     final type = scraper.getActivityType(element);
 
-    expect(type == SubjectType.laboratory, true);
+    expect(type, equals(SubjectType.lecture));
   });
 
-  test('scraper returns proper activity type -> lang', () async {
+  test('scraper returns proper activity type -> group project', () async {
     final document = await scraper.getScheduleDocument('blah');
-    final element = document.querySelectorAll('td')[20];
+    // Projekt zespołowy proj.
+    // Olas Tomasz Dr inż. /KI/
+    // E-learning
+    // body > table:nth-child(12) > tbody:nth-child(1) > tr:nth-child(8) > td:nth-child(15)
+    final element = document.querySelectorAll('tr')[7].children[14];
     final type = scraper.getActivityType(element);
 
-    expect(type == SubjectType.lang, true);
+    expect(type, equals(SubjectType.groupProject));
   });
 
   test('scraper returns proper activity location', () async {
     final document = await scraper.getScheduleDocument('blah');
-    final element = document.querySelectorAll('td')[19];
+    // Prog. urządzeń mobilnych wyk.
+    // Grosser Andrzej Dr inż. /KI/
+    // E-learning
+    // body > table:nth-child(12) > tbody:nth-child(1) > tr:nth-child(8) > td:nth-child(13)
+    final element = document.querySelectorAll('tr')[7].children[12];
     final location = scraper.getActivityLocation(element);
 
-    expect(location.contains('KMC'), true);
+    expect(location, contains('learning'));
   });
 
-  test('scraper returns proper activity location on empty teacher field',
-      () async {
+  test('scraper returns proper hour', () async {
+    // 14.00 - 15.00
+    // body > table:nth-child(12) > tbody:nth-child(1) > tr:nth-child(8) > td:nth-child(12)
     final document = await scraper.getScheduleDocument('blah');
-    final element = document.querySelectorAll('td')[20];
-    final location = scraper.getActivityLocation(element);
+    final element = document.querySelectorAll('tr')[7].children[11];
+    final value = scraper.getActivityBeginning(element);
 
-    expect(location.contains('SJO'), true);
-  });
-
-  test('scraper returns proper beginning hour', () async {
-    final document = await scraper.getScheduleDocument('blah');
-    final hourTd = document.querySelectorAll('tr')[1].querySelector('td');
-    final value = scraper.getActivityBeginning(hourTd);
-
-    expect(value, contains('8.00'));
-  });
-
-  test('scraper returns exact beginning hour', () async {
-    final document = await scraper.getScheduleDocument('blah');
-    final hourTd = document.querySelectorAll('tr')[1].querySelector('td');
-    final value = scraper.getActivityBeginning(hourTd);
-
-    expect(value, equals('8.00'));
+    expect(value, contains('14.00'));
   });
 }
