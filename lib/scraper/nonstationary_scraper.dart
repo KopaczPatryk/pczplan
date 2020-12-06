@@ -150,6 +150,7 @@ class NonstationaryScraper implements WimiiScheduleScraper {
     }
   }
 
+  @override
   void dispose() {
     _client.close();
   }

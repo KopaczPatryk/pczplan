@@ -5,6 +5,8 @@ import 'package:pczplan/scraper/models/schedule.dart';
 import 'package:pczplan/scraper/models/study_mode.dart';
 import 'package:pczplan/scraper/models/study_type.dart';
 import 'package:pczplan/scraper/nonstationary_scraper.dart';
+import 'package:pczplan/scraper/stationary_scraper.dart';
+import 'package:pczplan/scraper/wimii_schedule_scraper.dart';
 
 import 'package:pczplan/web_constants.dart' as web_constants;
 
@@ -64,15 +66,17 @@ class WimiiRepo {
 
   Future<Schedule> getSchedule(Group group) async {
     Schedule schedule;
+    WimiiScheduleScraper scraper;
     switch (group.mode) {
       case StudyMode.stationary:
+        scraper = StationaryScraper(Client());
         break;
       case StudyMode.non_stationary:
-        final scraper = NonstationaryScraper(Client());
-        schedule = await scraper.scrapSchedule(group);
-        scraper.dispose();
+        scraper = NonstationaryScraper(Client());
         break;
     }
+    schedule = await scraper.scrapSchedule(group);
+    scraper.dispose();
     return schedule;
   }
 

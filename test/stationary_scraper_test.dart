@@ -67,10 +67,19 @@ void main() {
     expect(day.activities.length, 12);
   });
 
-  test('day 2 returns 12 activities', () async {
+  test('day 09.10.2020 begins with Olas', () async {
     final document = await scraper.getScheduleDocument('blah');
-    final day = scraper.getDay(document, 2);
-    expect(day.activities.length, 12);
+    final day = scraper.getDay(document, 9);
+
+    expect(
+      day.activities
+          .where((activity) =>
+              activity.type != SubjectType.freiheit &&
+              activity.type != SubjectType.gap)
+          .first
+          .teacher,
+      contains('Olas'),
+    );
   });
 
   test('scraper returns proper activity name', () async {

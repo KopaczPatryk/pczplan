@@ -42,22 +42,21 @@ class StationaryScraper implements WimiiScheduleScraper {
     final hourElements = <Element>[];
     final activityElements = <Element>[];
 
-    allRows.forEach((tr) {
-      var colIndex = 0;
-      tr.children.forEach((td) {
-        if (colIndex == 0) {
-          hourElements.add(td);
-        }
-        if (colIndex == dayIndex + 1) {
-          activityElements.add(td);
-        }
-        colIndex++;
-      });
+    allRows.forEach((Element row) {
+      final hourElement = row.children[1 + (dayIndex * 2)];
+      final activityElement = row.children[1 + (dayIndex * 2) + 1];
+
+      hourElements.add(hourElement);
+      activityElements.add(activityElement);
     });
+
     var counter = 0;
     activityElements.forEach((element) {
       final activity = getActivity(
-          hourElements[counter], activityElements[counter], counter);
+        hourElements[counter],
+        activityElements[counter],
+        counter,
+      );
       activities.add(activity);
       counter++;
     });
@@ -66,10 +65,8 @@ class StationaryScraper implements WimiiScheduleScraper {
   }
 
   Day getDay(Document document, int dayIndex) {
-    final frameStart = 1 + dayIndex * 2;
-
-    final dayName = getDayName(document, frameStart);
-    final activities = getActivities(document, frameStart + 1);
+    final dayName = getDayName(document, dayIndex);
+    final activities = getActivities(document, dayIndex);
     return Day(dayName, activities);
   }
 
@@ -156,6 +153,7 @@ class StationaryScraper implements WimiiScheduleScraper {
     return Schedule(days);
   }
 
+  @override
   void dispose() {
     _client.close();
   }
