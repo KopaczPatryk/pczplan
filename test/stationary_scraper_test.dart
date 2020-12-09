@@ -7,9 +7,7 @@ import 'package:pczplan/scraper/models/schedule.dart';
 import 'package:pczplan/scraper/models/subject_type.dart';
 import 'package:pczplan/scraper/stationary_scraper.dart';
 
-import 'stationary_site.dart';
-
-// https://wimii.pcz.pl/download/plan/studia_stacjonarne/o68v.html
+import 'source/stationary_site.dart';
 
 void main() {
   final Client mockClient = MockClient((request) async {
