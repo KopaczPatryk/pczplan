@@ -11,9 +11,9 @@ import 'stationary_site.dart';
 
 void main() {
   final Client mockClient = MockClient((request) async {
-    final clean = removeDiacritics(stationary_site);
+    final clean = removeDiacritics(stationarySite);
 
-    return await Response(clean, 200);
+    return Response(clean, 200);
   });
 
   final scraper = StationaryScraper(mockClient);
@@ -108,7 +108,8 @@ void main() {
     // Prog. urządzeń mobilnych wyk.
     // Grosser Andrzej Dr inż. /KI/
     // E-learning
-    // body > table:nth-child(12) > tbody:nth-child(1) > tr:nth-child(8) > td:nth-child(13)
+    // body > table:nth-child(12) > tbody:nth-child(1)
+    // > tr:nth-child(8) > td:nth-child(13)
     final element = document.querySelectorAll('tr')[7].children[12];
     final type = scraper.getActivityType(element);
 
@@ -120,7 +121,8 @@ void main() {
     // Projekt zespołowy proj.
     // Olas Tomasz Dr inż. /KI/
     // E-learning
-    // body > table:nth-child(12) > tbody:nth-child(1) > tr:nth-child(8) > td:nth-child(15)
+    // body > table:nth-child(12) > tbody:nth-child(1)
+    // > tr:nth-child(8) > td:nth-child(15)
     final element = document.querySelectorAll('tr')[7].children[14];
     final type = scraper.getActivityType(element);
 
@@ -132,7 +134,8 @@ void main() {
     // Prog. urządzeń mobilnych wyk.
     // Grosser Andrzej Dr inż. /KI/
     // E-learning
-    // body > table:nth-child(12) > tbody:nth-child(1) > tr:nth-child(8) > td:nth-child(13)
+    // body > table:nth-child(12) > tbody:nth-child(1)
+    // > tr:nth-child(8) > td:nth-child(13)
     final element = document.querySelectorAll('tr')[7].children[12];
     final location = scraper.getActivityLocation(element);
 
@@ -141,7 +144,8 @@ void main() {
 
   test('scraper returns proper hour', () async {
     // 14.00 - 15.00
-    // body > table:nth-child(12) > tbody:nth-child(1) > tr:nth-child(8) > td:nth-child(12)
+    // body > table:nth-child(12) > tbody:nth-child(1)
+    // > tr:nth-child(8) > td:nth-child(12)
     final document = await scraper.getScheduleDocument('blah');
     final element = document.querySelectorAll('tr')[7].children[11];
     final value = scraper.getActivityBeginning(element);

@@ -1,5 +1,5 @@
 // https://wimii.pcz.pl/download/plan/studia_stacjonarne/o68v.html
-const stationary_site = '''
+const stationarySite = '''
 <html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2">
 <meta http-equiv="Content-Language" content="pl">

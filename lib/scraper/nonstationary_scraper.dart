@@ -16,10 +16,9 @@ class NonstationaryScraper implements WimiiScheduleScraper {
   @override
   Future<Schedule> scrapSchedule(Group group) async {
     final document = await getScheduleDocument(group.link);
-
     final days = <Day>[];
-
     final dayCount = getDayCount(document);
+
     for (var i = 0; i < dayCount; i++) {
       days.add(getDay(document, i));
     }
@@ -28,6 +27,7 @@ class NonstationaryScraper implements WimiiScheduleScraper {
 
   Future<Document> getScheduleDocument(String link) async {
     final response = await _client.get(link);
+
     if (response.statusCode == 200) {
       return parse(response.body);
     } else {
@@ -101,6 +101,7 @@ class NonstationaryScraper implements WimiiScheduleScraper {
   String getActivityTeacher(Element activityElement) {
     try {
       return activityElement.nodes[2]?.text ?? activityElement.nodes.last.text;
+      // ignore: avoid_catching_errors
     } on RangeError {
       return activityElement.nodes.last.text;
     }
@@ -122,7 +123,6 @@ class NonstationaryScraper implements WimiiScheduleScraper {
     final seminaryPattern = RegExp('sem[. ]?', caseSensitive: false);
     final langPattern = RegExp('sjo[. ]?', caseSensitive: false);
 
-//    final name = getActivityName(activityElement);
     final name = activityElement.text;
 
     if (laboratoryPattern.hasMatch(name)) {
@@ -145,6 +145,7 @@ class NonstationaryScraper implements WimiiScheduleScraper {
   String getActivityLocation(Element activityElement) {
     try {
       return activityElement.nodes[4]?.text ?? activityElement.nodes.last.text;
+      // ignore: avoid_catching_errors
     } on RangeError {
       return activityElement.nodes.last.text;
     }

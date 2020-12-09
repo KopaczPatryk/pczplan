@@ -17,12 +17,13 @@ class SelectStudyTypePageState extends State<SelectStudyTypePage> {
   final WimiiRepo _repo = WimiiRepo();
   final _items = <StudyType>[];
 
-  void init() async {
+  Future<void> init() async {
     final value = await _repo.getStudyTypes();
     if (mounted) {
       setState(() {
-        _items.clear();
-        _items.addAll(value);
+        _items
+          ..clear()
+          ..addAll(value);
         _isLoading = false;
       });
     }
@@ -49,7 +50,7 @@ class SelectStudyTypePageState extends State<SelectStudyTypePage> {
                   return ListTile(
                     title: Text(item.name),
                     onTap: () {
-                      Navigator.push(
+                      Navigator.push<MaterialPageRoute>(
                         context,
                         MaterialPageRoute(
                             builder: (context) => SelectStudyGroupPage(item)),

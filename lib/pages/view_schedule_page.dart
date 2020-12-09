@@ -20,7 +20,7 @@ class _ViewSchedulePageState extends State<ViewSchedulePage> {
   final WimiiRepo _repo = WimiiRepo();
   Schedule _schedule;
 
-  void init() async {
+  Future<void> init() async {
     final schedule = await _repo.getSchedule(widget._group);
     setState(() {
       _isLoading = false;

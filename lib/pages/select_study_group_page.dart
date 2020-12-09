@@ -37,7 +37,7 @@ class SelectStudyGroupPageState extends State<SelectStudyGroupPage> {
                   return ListTile(
                     title: Text(item.name),
                     onTap: () {
-                      Navigator.push(
+                      Navigator.push<MaterialPageRoute>(
                         context,
                         MaterialPageRoute(
                           builder: (context) => ViewSchedulePage(item),
@@ -57,7 +57,7 @@ class SelectStudyGroupPageState extends State<SelectStudyGroupPage> {
     Timer(const Duration(seconds: 1), init);
   }
 
-  void init() async {
+  Future<void> init() async {
     final groups = await _repo.getGroups(widget._studyType);
     if (mounted) {
       setState(() {

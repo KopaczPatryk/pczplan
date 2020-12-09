@@ -23,9 +23,8 @@ class StationaryScraper implements WimiiScheduleScraper {
     }
   }
 
-  int getDayCount(Document document) {
-    return (document.querySelector('tr').children.length - 1) ~/ 2;
-  }
+  int getDayCount(Document document) =>
+      (document.querySelector('tr').children.length - 1) ~/ 2;
 
   String getDayName(Document document, int dayIndex) {
     final dayFrame = 1 + 2 * dayIndex + 1;
@@ -40,7 +39,7 @@ class StationaryScraper implements WimiiScheduleScraper {
     final hourElements = <Element>[];
     final activityElements = <Element>[];
 
-    allRows.forEach((Element row) {
+    allRows.forEach((final Element row) {
       final hourElement = row.children[1 + (dayIndex * 2)];
       final activityElement = row.children[1 + (dayIndex * 2) + 1];
 
@@ -80,6 +79,7 @@ class StationaryScraper implements WimiiScheduleScraper {
   String getActivityTeacher(Element activityElement) {
     try {
       return activityElement.nodes[2]?.text ?? activityElement.nodes.last.text;
+      // ignore: avoid_catching_errors
     } on RangeError {
       return activityElement.nodes.last.text;
     }
@@ -101,7 +101,6 @@ class StationaryScraper implements WimiiScheduleScraper {
     final seminaryPattern = RegExp('sem[. ]?', caseSensitive: false);
     final langPattern = RegExp('sjo[. ]?', caseSensitive: false);
 
-//    final name = getActivityName(activityElement);
     final name = activityElement.text;
 
     if (laboratoryPattern.hasMatch(name)) {
@@ -124,6 +123,7 @@ class StationaryScraper implements WimiiScheduleScraper {
   String getActivityLocation(Element activityElement) {
     try {
       return activityElement.nodes[4]?.text ?? activityElement.nodes.last.text;
+      // ignore: avoid_catching_errors
     } on RangeError {
       return activityElement.nodes.last.text;
     }

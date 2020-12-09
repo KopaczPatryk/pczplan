@@ -15,7 +15,7 @@ class WimiiRepo {
 
   ///stacjonarne/niestacjonarne
   Future<List<StudyType>> getStudyTypes() async {
-    final response = await _client.get(web_constants.PAGE_STUDY_TYPES);
+    final response = await _client.get(web_constants.studyTypesPage);
     final document = parse(response.body);
 
     final elements = document
@@ -26,9 +26,9 @@ class WimiiRepo {
     final studyTypes = <StudyType>[];
     elements.forEach((p) {
       final link =
-          web_constants.HOME_PAGE + p.querySelector('a').attributes['href'];
+          web_constants.wimiiHomePage + p.querySelector('a').attributes['href'];
       final studyMode = p.text.contains('niestacjo')
-          ? StudyMode.non_stationary
+          ? StudyMode.nonStationary
           : StudyMode.stationary;
       studyTypes.add(StudyType(p.text, link, studyMode));
     });
@@ -49,10 +49,10 @@ class WimiiRepo {
       String link;
       switch (st.mode) {
         case StudyMode.stationary:
-          link = web_constants.STATIONARY_GROUPS;
+          link = web_constants.stationaryGroups;
           break;
-        case StudyMode.non_stationary:
-          link = web_constants.NON_STATIONARY_GROUPS;
+        case StudyMode.nonStationary:
+          link = web_constants.nonstationaryGroups;
           break;
       }
       link += element.attributes['href'];
@@ -71,7 +71,7 @@ class WimiiRepo {
       case StudyMode.stationary:
         scraper = StationaryScraper(Client());
         break;
-      case StudyMode.non_stationary:
+      case StudyMode.nonStationary:
         scraper = NonstationaryScraper(Client());
         break;
     }
