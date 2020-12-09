@@ -1,6 +1,8 @@
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart';
+import 'package:pczplan/extensions.dart';
+
 import 'package:pczplan/scraper/models/activity.dart';
 import 'package:pczplan/scraper/models/day.dart';
 import 'package:pczplan/scraper/models/group.dart';
@@ -115,8 +117,10 @@ class StationaryScraper implements WimiiScheduleScraper {
       return SubjectType.seminary;
     } else if (langPattern.hasMatch(name)) {
       return SubjectType.lang;
-    } else {
+    } else if (name.isEmpty || name.isBlank) {
       return SubjectType.gap;
+    } else {
+      return SubjectType.unknownSubject;
     }
   }
 
@@ -139,9 +143,7 @@ class StationaryScraper implements WimiiScheduleScraper {
     return Activity(beginning, subjectName, teacher, type, room);
   }
 
-  @override
-  Future<Schedule> scrapSchedule(Group group) async {
-    final document = await getScheduleDocument(group.link);
+  Schedule getSchedule(Document document) {
     final days = <Day>[];
 
     final dayCount = getDayCount(document);
@@ -149,6 +151,12 @@ class StationaryScraper implements WimiiScheduleScraper {
       days.add(getDay(document, i));
     }
     return Schedule(days);
+  }
+
+  @override
+  Future<Schedule> scrapSchedule(Group group) async {
+    final document = await getScheduleDocument(group.link);
+    return getSchedule(document);
   }
 
   @override

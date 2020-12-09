@@ -73,6 +73,9 @@ class ActivityView extends StatelessWidget {
       case SubjectType.freiheit:
         return 'Wolne';
         break;
+      case SubjectType.unknownSubject:
+        return '???';
+        break;
       case SubjectType.gap:
         return 'Okno';
         break;

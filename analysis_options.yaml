@@ -113,6 +113,7 @@ analyzer:
     # Please see https://github.com/flutter/flutter/pull/24528 for details.
     sdk_version_async_exported_from_core: ignore
     unused_import: error
+    missing_enum_constant_in_switch: error
   exclude:
     - "bin/cache/**"
     - "**.g.dart"

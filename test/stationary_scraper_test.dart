@@ -2,6 +2,8 @@ import 'package:diacritic/diacritic.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
+import 'package:pczplan/scraper/models/activity.dart';
+import 'package:pczplan/scraper/models/schedule.dart';
 import 'package:pczplan/scraper/models/subject_type.dart';
 import 'package:pczplan/scraper/stationary_scraper.dart';
 
@@ -151,5 +153,19 @@ void main() {
     final value = scraper.getActivityBeginning(element);
 
     expect(value, contains('14.00'));
+  });
+
+  test('all subject types are known', () async {
+    final document = await scraper.getScheduleDocument('blah');
+    final Schedule schedule = scraper.getSchedule(document);
+
+    final activities = <Activity>[];
+
+    schedule.days.forEach((element) {
+      activities.addAll(element.activities);
+    });
+    final unknownSubjects = activities
+        .where((activity) => activity.type == SubjectType.unknownSubject);
+    expect(unknownSubjects, isEmpty);
   });
 }

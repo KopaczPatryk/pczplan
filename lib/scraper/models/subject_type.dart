@@ -6,5 +6,6 @@ enum SubjectType {
   groupProject,
   lang,
   freiheit,
-  gap
+  gap,
+  unknownSubject
 }
