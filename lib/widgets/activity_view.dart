@@ -53,19 +53,19 @@ class ActivityView extends StatelessWidget {
   String _typeString(SubjectType type) {
     switch (type) {
       case SubjectType.laboratory:
-        return 'Lab';
+        return 'Lab.';
         break;
       case SubjectType.lecture:
-        return 'Wyk';
+        return 'Wyk.';
         break;
       case SubjectType.exercise:
-        return 'Ćw';
+        return 'Ćw.';
         break;
       case SubjectType.seminary:
-        return 'Sem';
+        return 'Sem.';
         break;
       case SubjectType.groupProject:
-        return 'Proj';
+        return 'Proj.';
         break;
       case SubjectType.lang:
         return 'Jęz.';
@@ -75,6 +75,9 @@ class ActivityView extends StatelessWidget {
         break;
       case SubjectType.unknownSubject:
         return '???';
+        break;
+      case SubjectType.elearning:
+        return 'E-learn.';
         break;
       case SubjectType.gap:
         return 'Okno';

@@ -2,7 +2,6 @@ import 'package:diacritic/diacritic.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
-import 'package:pczplan/scraper/models/subject_type.dart';
 import 'package:pczplan/scraper/nonstationary_scraper.dart';
 
 import 'source/nonstationary_site.dart';
@@ -54,41 +53,38 @@ void main() {
 
   test('scraper returns proper activity teacher', () async {
     final document = await scraper.getScheduleDocument('blah');
-    //Eksploatacja instalacji energetycznych
-    final element = document.querySelectorAll('td')[19];
+    // Architektura systemów komputerowych ćw
+    // Gałkowski Tomasz Dr inż. /KISI/
+    // E-learning
+    // body > table:nth-child(7) > tbody:nth-child(1)
+    // > tr:nth-child(7) > td:nth-child(8)
+    final element = document.querySelectorAll('tr')[6].children[7];
     final teacher = scraper.getActivityTeacher(element);
 
-    expect(teacher.toLowerCase().contains('Artur'.toLowerCase()), true);
-  });
-
-  test('scraper returns proper activity type -> lab', () async {
-    final document = await scraper.getScheduleDocument('blah');
-    final element = document.querySelectorAll('td')[19];
-    final type = scraper.getActivityType(element);
-
-    expect(type == SubjectType.laboratory, true);
-  });
-
-  test('scraper returns proper activity type -> lang', () async {
-    final document = await scraper.getScheduleDocument('blah');
-    final element = document.querySelectorAll('td')[20];
-    final type = scraper.getActivityType(element);
-
-    expect(type == SubjectType.lang, true);
+    expect(teacher, contains('Galkowski'));
   });
 
   test('scraper returns proper activity location', () async {
     final document = await scraper.getScheduleDocument('blah');
-    final element = document.querySelectorAll('td')[19];
+    // Podstawy sieci komputerowych lab.
+    // Różycki Wojciech Mgr /KI/
+    // s. 141 /KI/
+    // body > table:nth-child(7) > tbody:nth-child(1) >
+    // tr:nth-child(8) > td:nth-child(12)
+    final element = document.querySelectorAll('tr')[7].children[11];
     final location = scraper.getActivityLocation(element);
-
-    expect(location.contains('KMC'), true);
+    expect(location, contains('141'));
   });
 
   test('scraper returns proper activity location on empty teacher field',
       () async {
     final document = await scraper.getScheduleDocument('blah');
-    final element = document.querySelectorAll('td')[20];
+    // Język Obcy
+    //
+    // SJO
+    // body > table:nth-child(7) > tbody:nth-child(1) >
+    // tr:nth-child(3) > td:nth-child(15)
+    final element = document.querySelectorAll('tr')[2].children[14];
     final location = scraper.getActivityLocation(element);
 
     expect(location.contains('SJO'), true);
@@ -99,14 +95,6 @@ void main() {
     final hourTd = document.querySelectorAll('tr')[1].querySelector('td');
     final value = scraper.getActivityBeginning(hourTd);
 
-    expect(value, contains('8.00'));
-  });
-
-  test('scraper returns exact beginning hour', () async {
-    final document = await scraper.getScheduleDocument('blah');
-    final hourTd = document.querySelectorAll('tr')[1].querySelector('td');
-    final value = scraper.getActivityBeginning(hourTd);
-
-    expect(value, equals('8.00'));
+    expect(value, anyOf(equals('8:00'), equals('8.00')));
   });
 }

@@ -7,5 +7,6 @@ enum SubjectType {
   lang,
   freiheit,
   gap,
+  elearning,
   unknownSubject
 }

@@ -12,6 +12,18 @@ import 'package:pczplan/scraper/models/subject_type.dart';
 abstract class WimiiScheduleScraper {
   final Client _client;
 
+  final laboratoryPattern = RegExp('lab[. ]?', caseSensitive: false);
+
+  final lecturePattern =
+      RegExp('(?:lec(?:ture)?|wyk)[. ]?', caseSensitive: false);
+  final exercisePattern =
+      RegExp('(?:exe(?:rcise)?|[cć]w(?:iczenia)?)[. ]?', caseSensitive: false);
+
+  final gprojPattern = RegExp('proj[. ]?', caseSensitive: false);
+  final seminaryPattern = RegExp('sem[. ]?', caseSensitive: false);
+  final langPattern = RegExp('sjo[. ]?', caseSensitive: false);
+  final elearningPattern = RegExp('e-lear[. ]?', caseSensitive: false);
+
   WimiiScheduleScraper(this._client);
 
   Future<Document> getScheduleDocument(String link) async {
@@ -45,21 +57,6 @@ abstract class WimiiScheduleScraper {
   }
 
   SubjectType getActivityType(Element activityElement) {
-    final laboratoryPattern = RegExp('lab[. ]?', caseSensitive: false);
-    final lecturePattern = RegExp(
-      '(?:lec(?:ture)?|wyk)[. ]?',
-      caseSensitive: false,
-    );
-
-    final exercisePattern = RegExp(
-      '(?:exe(?:rcise)?|[cć]w(?:iczenia)?)[. ]?',
-      caseSensitive: false,
-    );
-
-    final gprojPattern = RegExp('proj[. ]?', caseSensitive: false);
-    final seminaryPattern = RegExp('sem[. ]?', caseSensitive: false);
-    final langPattern = RegExp('sjo[. ]?', caseSensitive: false);
-
     final name = activityElement.text;
 
     if (laboratoryPattern.hasMatch(name)) {
@@ -76,6 +73,8 @@ abstract class WimiiScheduleScraper {
       return SubjectType.lang;
     } else if (name.isEmpty || name.isBlank) {
       return SubjectType.gap;
+    } else if (elearningPattern.hasMatch(name)) {
+      return SubjectType.elearning;
     } else {
       return SubjectType.unknownSubject;
     }

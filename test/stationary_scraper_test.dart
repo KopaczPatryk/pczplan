@@ -150,7 +150,7 @@ void main() {
     final element = document.querySelectorAll('tr')[7].children[11];
     final value = scraper.getActivityBeginning(element);
 
-    expect(value, contains('14.00'));
+    expect(value, anyOf(equals('14:00'), equals('14.00')));
   });
 
   test('all subject types are known', () async {
