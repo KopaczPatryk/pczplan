@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pczplan/scraper/models/day.dart';
+import 'package:pczplan/style.dart';
 import 'package:pczplan/widgets/activity_view.dart';
 
 class SchedulePage extends StatelessWidget {
@@ -13,10 +14,9 @@ class SchedulePage extends StatelessWidget {
       children: [
         Text(_day.name ?? ''),
         Expanded(
-          child: ListView.builder(
-            itemBuilder: (ctx, pos) {
-              return ActivityView(_day.activities[pos]);
-            },
+          child: ListView.separated(
+            separatorBuilder: (_, __) => Container(height: 1, color: accent),
+            itemBuilder: (_, index) => ActivityView(_day.activities[index]),
             itemCount: _day.activities.length,
             shrinkWrap: true,
           ),
