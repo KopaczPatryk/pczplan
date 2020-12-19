@@ -14,9 +14,8 @@ class StationaryScraper extends WimiiScheduleScraper {
   @override
   String getDayName(Document document, int dayIndex) {
     final dayFrame = 1 + 2 * dayIndex + 1;
-    final dayTd = document.querySelector('tr').children[dayFrame];
-
-    return dayTd.innerHtml;
+    final element = document.querySelector('tr').children[dayFrame];
+    return '${element.nodes[2].text} ${element.nodes[0].text}';
   }
 
   @override

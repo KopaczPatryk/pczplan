@@ -15,10 +15,10 @@ class LoadingIndicator extends StatelessWidget {
         children: <Widget>[
           SpinKitCubeGrid(color: Theme.of(context).accentColor),
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20),
             child: Text(
               _text,
-              style: const TextStyle(fontSize: 18.0),
+              style: const TextStyle(fontSize: 18),
             ),
           ),
         ],

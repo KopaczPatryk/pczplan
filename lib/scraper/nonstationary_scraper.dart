@@ -13,7 +13,8 @@ class NonstationaryScraper extends WimiiScheduleScraper {
 
   @override
   String getDayName(Document document, int dayIndex) {
-    return document.querySelector('tr').children[dayIndex + 1].innerHtml;
+    final element = document.querySelector('tr').children[dayIndex + 1];
+    return '${element.nodes[2].text} ${element.nodes[0].text}';
   }
 
   @override

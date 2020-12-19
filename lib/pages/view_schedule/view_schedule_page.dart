@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pczplan/pages/view_schedule/widgets/schedule_day.dart';
 import 'package:pczplan/scraper/models/group.dart';
 import 'package:pczplan/scraper/models/schedule.dart';
 import 'package:pczplan/scraper/wimii_repo.dart';
 import 'package:pczplan/widgets/loading_indicator.dart';
-import 'package:pczplan/widgets/schedule_view.dart';
 
 class ViewSchedulePage extends StatefulWidget {
   final Group _group;
@@ -36,11 +36,26 @@ class _ViewSchedulePageState extends State<ViewSchedulePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(widget._group.name)),
-      body: _isLoading
-          ? const LoadingIndicator('Wczytuję plan')
-          : ScheduleView(_schedule),
+    return DefaultTabController(
+      length: _schedule?.days?.length ?? 0,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget._group.name),
+          bottom: !_isLoading
+              ? TabBar(
+                  isScrollable: true,
+                  tabs:
+                      _schedule.days.map((day) => Tab(text: day.name)).toList(),
+                )
+              : null,
+        ),
+        body: !_isLoading
+            ? TabBarView(
+                children:
+                    _schedule.days.map((day) => ScheduleDay(day)).toList(),
+              )
+            : const LoadingIndicator('Wczytuję plan'),
+      ),
     );
   }
 

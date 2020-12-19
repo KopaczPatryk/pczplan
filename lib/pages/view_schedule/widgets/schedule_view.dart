@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pczplan/scraper/models/schedule.dart';
-import 'package:pczplan/widgets/schedule_page_view.dart';
+import 'package:pczplan/pages/view_schedule/widgets/schedule_day.dart';
 
 class ScheduleView extends StatelessWidget {
   final Schedule _schedule;
@@ -10,7 +10,7 @@ class ScheduleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
-      itemBuilder: (context, pos) => SchedulePage(_schedule.days[pos]),
+      itemBuilder: (context, pos) => ScheduleDay(_schedule.days[pos]),
       itemCount: _schedule.days.length,
     );
   }

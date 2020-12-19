@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:pczplan/pages/view_schedule_page.dart';
+import 'package:pczplan/pages/view_schedule/view_schedule_page.dart';
 import 'package:pczplan/scraper/models/group.dart';
 import 'package:pczplan/scraper/models/study_type.dart';
 import 'package:pczplan/scraper/wimii_repo.dart';
@@ -21,6 +21,22 @@ class SelectStudyGroupPageState extends State<SelectStudyGroupPage> {
 
   final WimiiRepo _repo = WimiiRepo();
   final _groups = <Group>[];
+
+  Future<void> init() async {
+    final groups = await _repo.getGroups(widget._studyType);
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+        _groups.addAll(groups);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Timer(const Duration(seconds: 1), init);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,22 +65,6 @@ class SelectStudyGroupPageState extends State<SelectStudyGroupPage> {
               ),
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    Timer(const Duration(seconds: 1), init);
-  }
-
-  Future<void> init() async {
-    final groups = await _repo.getGroups(widget._studyType);
-    if (mounted) {
-      setState(() {
-        _isLoading = false;
-        _groups.addAll(groups);
-      });
-    }
   }
 
   @override
