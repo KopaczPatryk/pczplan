@@ -85,4 +85,17 @@ void main() {
 
     expect(matches, everyElement(true));
   });
+
+  test('getActivityTeacher', () async {
+    final document = await scraper.getScheduleDocument('blah');
+    // Architektura systemów komputerowych ćw
+    // Gałkowski Tomasz Dr inż. /KISI/
+    // E-learning
+    // body > table:nth-child(7) > tbody:nth-child(1)
+    // > tr:nth-child(7) > td:nth-child(8)
+    final element = document.querySelectorAll('tr')[6].children[7];
+    final String teacher = scraper.getActivityTeacher(element);
+
+    expect(teacher, contains('Galkowski Tomasz'));
+  });
 }

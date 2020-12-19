@@ -13,7 +13,7 @@ class LoadingIndicator extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          SpinKitCubeGrid(color: Theme.of(context).primaryColor),
+          SpinKitCubeGrid(color: Theme.of(context).accentColor),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Text(

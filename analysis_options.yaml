@@ -31,6 +31,7 @@ linter:
     - empty_catches
     - empty_constructor_bodies
     - empty_statements
+    - exhaustive_cases
     - file_names
     - hash_and_equals
     - implementation_imports

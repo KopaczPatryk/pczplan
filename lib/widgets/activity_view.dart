@@ -7,14 +7,11 @@ class ActivityView extends StatelessWidget {
   final Activity _activity;
 
   const ActivityView(this._activity);
-  TextStyle get _textStyle => TextStyle(color: textColor);
-  // TextStyle get _boldStyle =>
-  //     TextStyle(color: textColor, fontWeight: FontWeight.bold);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: background,
+      color: Style.background,
       child: Row(
         children: [
           Padding(
@@ -27,14 +24,12 @@ class ActivityView extends StatelessWidget {
                 children: [
                   Text(
                     _activity.beginning ?? '',
-                    style: _textStyle,
                     textAlign: TextAlign.center,
                   ),
                   Container(
-                    color: subjectExe,
+                    color: Style.subjectFlairColor(_activity.type),
                     child: Text(
                       _typeString(_activity.type),
-                      style: _textStyle,
                       textAlign: TextAlign.center,
                     ),
                   )
@@ -54,15 +49,12 @@ class ActivityView extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.clip,
                     softWrap: true,
-                    style: _textStyle,
                   ),
                   Text(
                     _activity.teacher ?? '',
-                    style: _textStyle,
                   ),
                   Text(
                     _activity.room ?? '',
-                    style: _textStyle,
                   )
                 ],
               ),

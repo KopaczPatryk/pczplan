@@ -15,7 +15,8 @@ class SchedulePage extends StatelessWidget {
         Text(_day.name ?? ''),
         Expanded(
           child: ListView.separated(
-            separatorBuilder: (_, __) => Container(height: 1, color: accent),
+            separatorBuilder: (_, __) =>
+                Container(height: 1, color: Style.accent),
             itemBuilder: (_, index) => ActivityView(_day.activities[index]),
             itemCount: _day.activities.length,
             shrinkWrap: true,
