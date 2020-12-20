@@ -16,6 +16,7 @@ class WimiiRepo {
   ///stacjonarne/niestacjonarne
   Future<List<StudyType>> getStudyTypes() async {
     final response = await _client.get(web_constants.studyTypesPage);
+
     final document = parse(response.body);
 
     final elements = document
@@ -63,7 +64,6 @@ class WimiiRepo {
   }
 
   ///plan konkretny dla grupy
-
   Future<Schedule> getSchedule(Group group) async {
     Schedule schedule;
     WimiiScheduleScraper scraper;

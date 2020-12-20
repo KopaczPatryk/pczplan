@@ -30,6 +30,8 @@ void main() {
       scraper.lecturePattern.hasMatch('lec.'),
       scraper.lecturePattern.hasMatch('wyk'),
       scraper.lecturePattern.hasMatch('Wyk.'),
+      scraper.lecturePattern.hasMatch('W'),
+      scraper.lecturePattern.hasMatch('W.'),
     ];
 
     expect(matches, everyElement(true));

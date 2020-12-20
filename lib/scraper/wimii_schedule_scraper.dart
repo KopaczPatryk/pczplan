@@ -13,12 +13,10 @@ abstract class WimiiScheduleScraper {
   final Client _client;
 
   final laboratoryPattern = RegExp('lab[. ]?', caseSensitive: false);
-
   final lecturePattern =
-      RegExp('(?:lec(?:ture)?|wyk)[. ]?', caseSensitive: false);
+      RegExp('(?:lec(?:ture)?|wyk|w)[. ]?', caseSensitive: false);
   final exercisePattern =
       RegExp('(?:exe(?:rcise)?|[cć]w(?:iczenia)?)[. ]?', caseSensitive: false);
-
   final gprojPattern = RegExp('proj[. ]?', caseSensitive: false);
   final seminaryPattern = RegExp('sem[. ]?', caseSensitive: false);
   final langPattern = RegExp('sjo[. ]?', caseSensitive: false);
