@@ -46,13 +46,13 @@ class ActivityView extends StatelessWidget {
                 children: [
                   Text(
                     _activity.subjectName ?? '',
-                    maxLines: 1,
-                    overflow: TextOverflow.clip,
                     softWrap: true,
                   ),
+                  const SizedBox(height: 4),
                   Text(
                     _activity.teacher ?? '',
                   ),
+                  const SizedBox(height: 4),
                   Text(
                     _activity.room ?? '',
                   )

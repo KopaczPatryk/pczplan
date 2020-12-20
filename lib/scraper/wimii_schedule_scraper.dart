@@ -43,13 +43,21 @@ abstract class WimiiScheduleScraper {
     return startHourPattern.stringMatch(element.innerHtml);
   }
 
+  List<Node> stripBreaks(Element element) {
+    return element.nodes
+        .where((element) => element.nodeType == Node.TEXT_NODE)
+        .toList();
+  }
+
   String getActivityName(Element activityElement) {
-    return activityElement.text.split('<br>').last ?? '';
+    final rows = stripBreaks(activityElement);
+    return rows.first.text ?? '';
   }
 
   String getActivityTeacher(Element activityElement) {
     try {
-      return activityElement.nodes[2]?.text ?? activityElement.nodes.last.text;
+      final rows = stripBreaks(activityElement);
+      return rows[1].text ?? '';
       // ignore: avoid_catching_errors
     } on RangeError {
       return activityElement.nodes.last.text;
@@ -82,7 +90,8 @@ abstract class WimiiScheduleScraper {
 
   String getActivityLocation(Element activityElement) {
     try {
-      return activityElement.nodes[4]?.text ?? activityElement.nodes.last.text;
+      final rows = stripBreaks(activityElement);
+      return rows.last.text ?? '';
       // ignore: avoid_catching_errors
     } on RangeError {
       return activityElement.nodes.last.text;
